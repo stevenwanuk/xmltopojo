@@ -1,0 +1,571 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="topic-title" type="xs:string"/>
+  <xs:element name="reason">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="update-reason" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="version">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="reason" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:date" name="date" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="synonym">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="displayable" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="category">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:byte" name="id" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="title">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="topic-title" minOccurs="0"/>
+        <xs:element ref="reference" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="last-updated" type="xs:dateTime"/>
+  <xs:element name="version-history">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="version" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="synonyms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="synonym" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="related-topics" type="xs:string"/>
+  <xs:element name="categories">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="category" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="highlight" type="xs:string"/>
+  <xs:element name="citation" type="xs:string"/>
+  <xs:element name="poc-citation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="citation"/>
+        <xs:element ref="fulltext-url" minOccurs="0"/>
+        <xs:element ref="url" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="key-article" use="optional"/>
+      <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fulltext-url" type="xs:anyURI"/>
+  <xs:element name="reference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="poc-citation"/>
+      </xs:sequence>
+      <xs:attribute type="xs:byte" name="ref-id" use="optional"/>
+      <xs:attribute type="xs:byte" name="refs-ref-id" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="para">
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="reference"/>
+        <xs:element ref="figure"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="item">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="para" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="list">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="item" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="reference" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="style" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="detail">
+    <xs:complexType mixed="true">
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="para"/>
+        <xs:element ref="list"/>
+        <xs:element ref="reference"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="classification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="image-link">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="target" use="optional"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="caption" type="xs:string"/>
+  <xs:element name="source" type="xs:string"/>
+  <xs:element name="figure">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="image-link" minOccurs="0"/>
+        <xs:element ref="caption" minOccurs="0"/>
+        <xs:element ref="source" minOccurs="0"/>
+        <xs:element ref="poc-citation" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:byte" name="fig-id" use="optional"/>
+      <xs:attribute type="xs:byte" name="ref-id" use="optional"/>
+      <xs:attribute type="xs:byte" name="figs-fig-id" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="vignette">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="risk-factor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="strength" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="definition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="classifications">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="classification"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="vignettes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="vignette" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="other-presentations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="epidemiology">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="etiology">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="list"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pathophysiology">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="risk-factors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="risk-factor" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="section-text">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="para"/>
+        <xs:element ref="list"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="section-header" type="xs:string"/>
+  <xs:element name="url" type="xs:string"/>
+  <xs:element name="section">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="section-header" minOccurs="0"/>
+        <xs:element ref="section-text" minOccurs="0"/>
+        <xs:element ref="definition" minOccurs="0"/>
+        <xs:element ref="classifications" minOccurs="0"/>
+        <xs:element ref="vignettes" minOccurs="0"/>
+        <xs:element ref="other-presentations" minOccurs="0"/>
+        <xs:element ref="epidemiology" minOccurs="0"/>
+        <xs:element ref="etiology" minOccurs="0"/>
+        <xs:element ref="pathophysiology" minOccurs="0"/>
+        <xs:element ref="risk-factors" minOccurs="0"/>
+        <xs:element ref="approach" minOccurs="0"/>
+        <xs:element ref="diagnostic-factors" minOccurs="0"/>
+        <xs:element ref="tests" minOccurs="0"/>
+        <xs:element ref="differentials" minOccurs="0"/>
+        <xs:element ref="diagnostic-criteria" minOccurs="0"/>
+        <xs:element ref="tx-options" minOccurs="0"/>
+        <xs:element ref="emerging-txs" minOccurs="0"/>
+        <xs:element ref="guidelines" minOccurs="0"/>
+        <xs:element ref="outlook" minOccurs="0"/>
+        <xs:element ref="complications" minOccurs="0"/>
+        <xs:element ref="recommendations" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="factor-name" type="xs:string"/>
+  <xs:element name="factor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="factor-name"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="frequency" use="optional"/>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="key-factor" use="optional"/>
+      <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="result" type="xs:string"/>
+  <xs:element name="test">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="result"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="order" use="optional"/>
+      <xs:attribute type="xs:string" name="type" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sign-symptoms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tests">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" minOccurs="0"/>
+        <xs:element ref="test" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="differential">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="sign-symptoms"/>
+        <xs:element ref="tests"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="criteria">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="approach">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="section" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="diagnostic-factors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="factor" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="differentials">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="differential" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="diagnostic-criteria">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="criteria"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pt-group" type="xs:string"/>
+  <xs:element name="tx-type" type="xs:string"/>
+  <xs:element name="comments">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tx-options">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="tx-option" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="details" type="xs:string"/>
+  <xs:element name="component">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element ref="name" minOccurs="0"/>
+        <xs:element ref="details"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="modifier" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="components">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="component"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="regimen">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="components"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:byte" name="tier" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="regimens">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="regimen" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tx-option">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="pt-group"/>
+        <xs:element ref="tx-type"/>
+        <xs:element ref="comments"/>
+        <xs:element ref="regimens" minOccurs="0"/>
+        <xs:element ref="tx-options"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="timeframe" use="optional"/>
+      <xs:attribute type="xs:string" name="tx-line" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="emerging-tx">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="last-published" type="xs:short"/>
+  <xs:element name="summary">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="highlight" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="guideline">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="source"/>
+        <xs:element ref="last-published"/>
+        <xs:element ref="url" minOccurs="0"/>
+        <xs:element ref="summary"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="region" use="optional"/>
+      <xs:attribute type="xs:string" name="status" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="emerging-txs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="emerging-tx" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="guidelines">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="guideline" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="complication">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="name"/>
+        <xs:element ref="detail"/>
+      </xs:sequence>
+      <xs:attribute type="xs:string" name="id" use="optional"/>
+      <xs:attribute type="xs:string" name="likelihood" use="optional"/>
+      <xs:attribute type="xs:string" name="timeframe" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="monitoring">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="patient-instructions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="preventive-actions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="para" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="outlook">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="section" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="complications">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="complication" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recommendations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="monitoring"/>
+        <xs:element ref="patient-instructions"/>
+        <xs:element ref="preventive-actions"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="figures">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="figure" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="references">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="reference" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="metadata">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="title"/>
+        <xs:element ref="last-updated"/>
+        <xs:element ref="version-history"/>
+        <xs:element ref="synonyms"/>
+        <xs:element ref="related-topics"/>
+        <xs:element ref="categories"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="content">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="section" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="figures"/>
+        <xs:element ref="references"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="topic">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="metadata"/>
+        <xs:element ref="summary"/>
+        <xs:element ref="content"/>
+      </xs:sequence>
+      <xs:attribute type="xs:short" name="dx-id"/>
+      <xs:attribute type="xs:string" name="id"/>
+      <xs:attribute type="xs:string" name="type"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
